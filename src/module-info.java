@@ -5,4 +5,5 @@ module EmailClientApp {
     requires javafx.web;
 
     opens pl.devtommy;
+    opens pl.devtommy.view;
 }
