@@ -8,7 +8,7 @@ public class LoginWindowController {
     private TextField emailAddressField;
 
     @FXML
-    private TextField passwordFileld;
+    private TextField passwordField;
 
     @FXML
     private Label errorLabel;
