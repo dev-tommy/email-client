@@ -29,24 +29,28 @@ public class LoginWindowController extends BaseController {
         if(fieldsAreValid()){
             EmailAccount emailAccount = new EmailAccount(emailAddressField.getText(), passwordField.getText());
             LoginService loginService = new LoginService(emailAccount, emailManager);
-            EmailLoginResult emailLoginResult = loginService.login();
+            loginService.start();
+            loginService.setOnSucceeded(event -> {
+                EmailLoginResult emailLoginResult = loginService.getValue();
 
-            switch (emailLoginResult) {
-                case SUCCESS:
-                    System.out.println("login succesfull " + emailAccount);
-                    viewFactory.showMainWindow();
-                    Stage stage = (Stage) errorLabel.getScene().getWindow();
-                    viewFactory.closeStage(stage);
-                    return;
-                case FAILED_BY_CREDENTIALS:
-                    errorLabel.setText("invalid credentials");
-                    return;
-                case FAILED_BY_UNEXPECTED_ERROR:
-                    errorLabel.setText("Unexpected error");
-                    return;
-                default:
-                    return;
-            }
+                switch (emailLoginResult) {
+                    case SUCCESS:
+                        System.out.println("login succesfull " + emailAccount);
+
+                        viewFactory.showMainWindow();
+                        Stage stage = (Stage) errorLabel.getScene().getWindow();
+                        viewFactory.closeStage(stage);
+                        return;
+                    case FAILED_BY_CREDENTIALS:
+                        errorLabel.setText("invalid credentials");
+                        return;
+                    case FAILED_BY_UNEXPECTED_ERROR:
+                        errorLabel.setText("Unexpected error");
+                        return;
+                    default:
+                        return;
+                }
+            });
         }
     }
 
