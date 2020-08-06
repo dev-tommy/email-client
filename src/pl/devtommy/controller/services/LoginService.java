@@ -15,7 +15,7 @@ public class LoginService {
         this.emailManager = emailManager;
     }
 
-    private EmailLoginResult login() {
+    public EmailLoginResult login() {
         Authenticator authenticator = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
