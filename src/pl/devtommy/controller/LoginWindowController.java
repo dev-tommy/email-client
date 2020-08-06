@@ -33,13 +33,20 @@ public class LoginWindowController extends BaseController {
             switch (emailLoginResult) {
                 case SUCCESS:
                     System.out.println("login succesfull " + emailAccount);
+                    viewFactory.showMainWindow();
+                    Stage stage = (Stage) errorLabel.getScene().getWindow();
+                    viewFactory.closeStage(stage);
+                    return;
+                case FAILED_BY_CREDENTIALS:
+                    errorLabel.setText("invalid credentials");
+                    return;
+                case FAILED_BY_UNEXPECTED_ERROR:
+                    errorLabel.setText("Unexpected error");
+                    return;
+                default:
                     return;
             }
         }
-
-        //viewFactory.showMainWindow();
-        //Stage stage = (Stage) errorLabel.getScene().getWindow();
-        //viewFactory.closeStage(stage);
     }
 
     private boolean fieldsAreValid() {
