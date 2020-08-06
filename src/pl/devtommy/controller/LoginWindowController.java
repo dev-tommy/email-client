@@ -1,5 +1,6 @@
 package pl.devtommy.controller;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -9,7 +10,14 @@ import pl.devtommy.controller.services.LoginService;
 import pl.devtommy.model.EmailAccount;
 import pl.devtommy.view.ViewFactory;
 
-public class LoginWindowController extends BaseController {
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Properties;
+import java.util.ResourceBundle;
+
+public class LoginWindowController extends BaseController implements Initializable {
     @FXML
     private TextField emailAddressField;
 
@@ -65,5 +73,26 @@ public class LoginWindowController extends BaseController {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        try (InputStream input = new FileInputStream("src/pl/devtommy/config.properties")) {
+            /* config.properties file:
+
+               email.login=your_email_address
+               email.password=your_email_password
+
+             */
+
+            Properties prop = new Properties();
+            prop.load(input);
+
+            emailAddressField.setText(prop.getProperty("email.login"));
+            passwordField.setText(prop.getProperty("email.password"));
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }
