@@ -1,6 +1,7 @@
 package pl.devtommy.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import pl.devtommy.EmailManager;
@@ -13,7 +14,7 @@ public class LoginWindowController extends BaseController {
     private TextField emailAddressField;
 
     @FXML
-    private TextField passwordField;
+    private PasswordField passwordField;
 
     @FXML
     private Label errorLabel;
