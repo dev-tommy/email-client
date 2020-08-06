@@ -27,6 +27,13 @@ public class ViewFactory {
 
     }
 
+    public void showMainWindow() {
+        System.out.println("Show main window");
+
+        BaseController controller = new MainWindowController(emailManager, this, "MainWindow.fxml");
+        initializeStage(controller);
+    }
+
     private void initializeStage(BaseController baseController) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(baseController.getFxmlName()));
         fxmlLoader.setController(baseController);
