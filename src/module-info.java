@@ -9,4 +9,5 @@ module EmailClientApp {
     opens pl.devtommy;
     opens pl.devtommy.view;
     opens pl.devtommy.controller;
+    opens pl.devtommy.model;
 }
