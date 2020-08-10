@@ -1,6 +1,8 @@
 package pl.devtommy.model;
 
-public class SizeInteger {
+import java.util.Comparator;
+
+public class SizeInteger implements Comparable<SizeInteger> {
     private int size;
 
     public SizeInteger(int size) {
@@ -17,6 +19,17 @@ public class SizeInteger {
             return size / 1024 + "KB";
         } else  {
             return size /1048576 + "MB";
+        }
+    }
+
+    @Override
+    public int compareTo(SizeInteger o) {
+        if (size > o.size) {
+            return 1;
+        } else if (size < o.size) {
+            return -1;
+        } else {
+            return 0;
         }
     }
 }
