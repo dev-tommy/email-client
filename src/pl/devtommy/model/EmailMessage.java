@@ -1,23 +1,16 @@
 package pl.devtommy.model;
 
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-import javax.activation.DataHandler;
 import javax.mail.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Date;
-import java.util.Enumeration;
 
 public class EmailMessage {
     private SimpleStringProperty subject;
     private SimpleStringProperty sender;
     private SimpleStringProperty recipient;
-    private SimpleIntegerProperty size;
+    private SimpleObjectProperty<SizeInteger> size;
     private SimpleObjectProperty<Date> date;
     private boolean isRead;
     private Message message;
@@ -27,7 +20,7 @@ public class EmailMessage {
         this.subject = new SimpleStringProperty(subject);
         this.sender = new SimpleStringProperty(sender);
         this.recipient = new SimpleStringProperty(recipient);
-        this.size = new SimpleIntegerProperty(size);
+        this.size = new SimpleObjectProperty<SizeInteger>(new SizeInteger(size));
         this.isRead = isRead;
         this.date = new SimpleObjectProperty<Date>(date);
         this.message = message;
@@ -47,7 +40,7 @@ public class EmailMessage {
         return this.recipient.get();
     }
 
-    public Integer getSize() {
+    public SizeInteger getSize() {
         return this.size.get();
     }
 
