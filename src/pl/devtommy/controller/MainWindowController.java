@@ -65,6 +65,17 @@ public class MainWindowController extends BaseController implements Initializabl
         setUpFolderSelection();
         setUpBoldRows();
         setUpMessageRendererService();
+        setUpMessageSelection();
+    }
+
+    private void setUpMessageSelection() {
+        emailsTableView.setOnMouseClicked(e-> {
+            EmailMessage emailMessage = emailsTableView.getSelectionModel().getSelectedItem();
+            if(emailMessage != null) {
+                messageRendererService.setEmailMessage(emailMessage);
+                messageRendererService.restart();
+            }
+        });
     }
 
     private void setUpMessageRendererService() {
