@@ -3,12 +3,15 @@ package pl.devtommy;
 import javafx.scene.control.TreeItem;
 import pl.devtommy.controller.services.FetchFoldersService;
 import pl.devtommy.controller.services.FolderUpdaterService;
+import pl.devtommy.controller.services.MessageRendererService;
 import pl.devtommy.model.EmailAccount;
 import pl.devtommy.model.EmailMessage;
 import pl.devtommy.model.EmailTreeItem;
 
 import javax.mail.Flags;
 import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,11 +81,39 @@ public class EmailManager {
 
     public void deleteSelectedMessage() {
         try {
+            copySelectedMessageToTrash();
+
             selectedMessage.getMessage().setFlag(Flags.Flag.DELETED, true);
             selectedFolder.getEmailMessages().remove(selectedMessage);
+            selectedMessage.getMessage().getFolder().expunge();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void copySelectedMessageToTrash() throws MessagingException {
+        Folder currentFolder = selectedMessage.getMessage().getFolder();
+        Folder trashFolder = getTrashFolder();
+        Message[] messagesToCopy = {selectedMessage.getMessage()};
+
+        if (!isTrashFolder(currentFolder)) {
+            currentFolder.copyMessages(messagesToCopy, trashFolder);
+        }
+    }
+
+    private boolean isTrashFolder(Folder folder) throws MessagingException {
+        return folder.getName().equals("Trash");
+    }
+
+    private Folder getTrashFolder() throws MessagingException {
+        Folder currentFolder = selectedMessage.getMessage().getFolder();
+        Folder trashFolder;
+        if (selectedMessage.getMessage().getFolder().getName().equals("INBOX") ) {
+            trashFolder = currentFolder.listSubscribed("Trash")[0];
+        } else {
+            trashFolder = currentFolder.getParent().listSubscribed("Trash")[0];
+        }
+        return trashFolder;
     }
 
 
