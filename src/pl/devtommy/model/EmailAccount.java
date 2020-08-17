@@ -5,6 +5,7 @@ import java.util.Properties;
 
 public class EmailAccount {
 
+
     private String address;
     private String password;
     private Properties properties;
@@ -16,6 +17,11 @@ public class EmailAccount {
 
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String toString() {
+        return address;
     }
 
     public Properties getProperties() {
