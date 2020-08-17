@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import pl.devtommy.EmailManager;
 import pl.devtommy.controller.BaseController;
+import pl.devtommy.controller.ComposeMessageController;
 import pl.devtommy.controller.LoginWindowController;
 import pl.devtommy.controller.MainWindowController;
 
@@ -31,6 +32,13 @@ public class ViewFactory {
         System.out.println("Show main window");
 
         BaseController controller = new MainWindowController(emailManager, this, "MainWindow.fxml");
+        initializeStage(controller);
+    }
+
+    public void showComposeMessageWindow() {
+        System.out.println("Show compose message window");
+
+        BaseController controller = new ComposeMessageController(emailManager, this, "ComposeMessageWindow.fxml");
         initializeStage(controller);
     }
 
