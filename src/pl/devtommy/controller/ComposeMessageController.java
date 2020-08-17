@@ -6,7 +6,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.web.HTMLEditor;
+import javafx.stage.Stage;
 import pl.devtommy.EmailManager;
+import pl.devtommy.controller.services.EmailSenderService;
 import pl.devtommy.model.EmailAccount;
 import pl.devtommy.view.ViewFactory;
 
@@ -33,8 +35,28 @@ public class ComposeMessageController extends BaseController implements Initiali
 
     @FXML
     void sendButtonAction() {
-        System.out.println(htmlEditor.getHtmlText());
-        System.out.println("send button action");
+        EmailSenderService emailSenderService = new EmailSenderService(
+                emailAccountChoice.getValue(),
+                subjectTextField.getText(),
+                recipientTextField.getText(),
+                htmlEditor.getHtmlText()
+        );
+        emailSenderService.start();
+        emailSenderService.setOnSucceeded(e->{
+            EmailSendingResult emailSendingResult = emailSenderService.getValue();
+            switch (emailSendingResult) {
+                case SUCCESS:
+                    Stage stage = (Stage) recipientTextField.getScene().getWindow();
+                    viewFactory.closeStage(stage);
+                    break;
+                case FAILED_BY_PROVIDER:
+                    errorLabel.setText("Provider error");
+                    break;
+                case FAILED_BY_UNEXPECTED_ERROR:
+                    errorLabel.setText("Unexpected error");
+                    break;
+            }
+        });
     }
 
     public ComposeMessageController(EmailManager emailManager, ViewFactory viewFactory, String fxmlName) {
