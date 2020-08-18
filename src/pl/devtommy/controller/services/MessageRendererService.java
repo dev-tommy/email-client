@@ -77,6 +77,7 @@ public class MessageRendererService extends Service {
             }
             else if(!isTextPlain(contentType)){
                 MimeBodyPart mbp = (MimeBodyPart)bodyPart;
+                emailMessage.addAttachment(mbp);
             }
         }
     }
