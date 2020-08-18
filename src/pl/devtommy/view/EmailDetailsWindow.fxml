@@ -10,7 +10,7 @@
    <children>
       <Label layoutX="22.0" layoutY="21.0" prefHeight="17.0" prefWidth="70.0" text="Subject:" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="384.0" />
       <Label layoutX="22.0" layoutY="46.0" prefHeight="17.0" prefWidth="70.0" text="Sender:" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="384.0" />
-      <Label layoutX="22.0" layoutY="71.0" prefHeight="17.0" prefWidth="87.0" text="Attachments:" AnchorPane.bottomAnchor="467.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="384.0" />
+      <Label fx:id="attachmentLabel" layoutX="22.0" layoutY="71.0" prefHeight="17.0" prefWidth="87.0" text="Attachments:" AnchorPane.bottomAnchor="467.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="384.0" />
       <WebView fx:id="webView" layoutX="22.0" layoutY="97.0" prefHeight="444.0" prefWidth="458.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="95.0" />
       <Label fx:id="subjectLabel" layoutX="109.0" layoutY="21.0" prefHeight="17.0" prefWidth="364.0" />
       <Label fx:id="senderLabel" layoutX="109.0" layoutY="46.0" prefHeight="17.0" prefWidth="364.0" />
