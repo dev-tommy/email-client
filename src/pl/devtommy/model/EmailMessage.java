@@ -17,7 +17,17 @@ public class EmailMessage {
     private SimpleObjectProperty<Date> date;
     private boolean isRead;
     private Message message;
+
+    public List<MimeBodyPart> getAttachmentList() {
+        return attachmentList;
+    }
+
     private List<MimeBodyPart> attachmentList = new ArrayList<MimeBodyPart>();
+
+    public boolean isHasAttachment() {
+        return hasAttachment;
+    }
+
     private boolean hasAttachment = false;
 
 
