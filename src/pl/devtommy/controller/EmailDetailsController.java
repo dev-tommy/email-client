@@ -83,6 +83,7 @@ public class EmailDetailsController extends BaseController implements Initializa
         }
 
         private void downloadAttachment() {
+            colorBlue();
             Service service = new Service() {
                 @Override
                 protected Task createTask() {
@@ -96,6 +97,17 @@ public class EmailDetailsController extends BaseController implements Initializa
                 }
             };
             service.restart();
+            service.setOnSucceeded(event -> colorGreen());
+        }
+
+        private void colorBlue(){
+            this.setStyle("-fx-background-color: Blue");
+        }
+
+        private void colorGreen(){
+            this.setStyle("-fx-background-color: Green");
         }
     }
+
+
 }
