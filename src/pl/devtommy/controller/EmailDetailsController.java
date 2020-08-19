@@ -1,5 +1,7 @@
 package pl.devtommy.controller;
 
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -51,19 +53,49 @@ public class EmailDetailsController extends BaseController implements Initializa
         messageRendererService.restart();
     }
 
-    private void loadAttachments(EmailMessage emailMessage){
-        if(emailMessage.isHasAttachment()) {
-            for (MimeBodyPart mimeBodyPart: emailMessage.getAttachmentList()) {
+    private void loadAttachments(EmailMessage emailMessage) {
+        if (emailMessage.isHasAttachment()) {
+            for (MimeBodyPart mimeBodyPart : emailMessage.getAttachmentList()) {
                 try {
-                    Button button = new Button(mimeBodyPart.getFileName());
+                    AttachmentButton button = new AttachmentButton(mimeBodyPart);
                     hBoxDownloads.getChildren().add(button);
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }
             }
-        }   else {
+        } else {
             attachmentLabel.setText("");
         }
 
+    }
+
+    private class AttachmentButton extends Button {
+
+        private MimeBodyPart mimeBodyPart;
+        private String downloadedFilePath;
+
+        public AttachmentButton(MimeBodyPart mimeBodyPart) throws MessagingException {
+            this.mimeBodyPart = mimeBodyPart;
+            this.setText(mimeBodyPart.getFileName());
+            this.downloadedFilePath = LOCATION_OF_DOWNLOADS + mimeBodyPart.getFileName();
+
+            this.setOnAction(event -> downloadAttachment());
+        }
+
+        private void downloadAttachment() {
+            Service service = new Service() {
+                @Override
+                protected Task createTask() {
+                    return new Task() {
+                        @Override
+                        protected Object call() throws Exception {
+                            mimeBodyPart.saveFile(downloadedFilePath);
+                            return null;
+                        }
+                    };
+                }
+            };
+            service.restart();
+        }
     }
 }
