@@ -15,6 +15,10 @@ import pl.devtommy.view.ViewFactory;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -97,7 +101,10 @@ public class EmailDetailsController extends BaseController implements Initializa
                 }
             };
             service.restart();
-            service.setOnSucceeded(event -> colorGreen());
+            service.setOnSucceeded(event -> {
+                colorGreen();
+                this.setOnAction(event1 -> openFile());
+            });
         }
 
         private void colorBlue(){
@@ -106,6 +113,18 @@ public class EmailDetailsController extends BaseController implements Initializa
 
         private void colorGreen(){
             this.setStyle("-fx-background-color: Green");
+        }
+
+        private void openFile(){
+            File file = new File(downloadedFilePath);
+            Desktop desktop = Desktop.getDesktop();
+            if(file.exists()){
+                try {
+                    desktop.open(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
