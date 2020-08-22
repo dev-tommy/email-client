@@ -28,6 +28,10 @@ public class EmailMessage {
         return hasAttachment;
     }
 
+    public void clearAttachmentList() {
+        attachmentList.clear();
+    }
+
     private boolean hasAttachment = false;
 
 
