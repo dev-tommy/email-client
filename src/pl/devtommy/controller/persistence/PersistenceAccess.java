@@ -1,7 +1,6 @@
 package pl.devtommy.controller.persistence;
 
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +19,20 @@ public class PersistenceAccess {
             e.printStackTrace();
         }
         return resultList;
+    }
+
+    public void saveToPersistence(List<ValidAccount> validAccounts){
+        try {
+            File file = new File(VALID_ACCOUNTS_LOCATION);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(validAccounts);
+            objectOutputStream.close();
+            fileOutputStream.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
