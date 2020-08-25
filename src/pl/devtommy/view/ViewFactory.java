@@ -5,10 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import pl.devtommy.EmailManager;
-import pl.devtommy.controller.BaseController;
-import pl.devtommy.controller.ComposeMessageController;
-import pl.devtommy.controller.LoginWindowController;
-import pl.devtommy.controller.MainWindowController;
+import pl.devtommy.controller.*;
 
 import java.io.IOException;
 
@@ -39,6 +36,13 @@ public class ViewFactory {
         System.out.println("Show compose message window");
 
         BaseController controller = new ComposeMessageController(emailManager, this, "ComposeMessageWindow.fxml");
+        initializeStage(controller);
+    }
+
+    public void showEmailDetailsWindow() {
+        System.out.println("Show email details window");
+
+        BaseController controller = new EmailDetailsController(emailManager, this, "EmailDetailsWindow.fxml");
         initializeStage(controller);
     }
 
