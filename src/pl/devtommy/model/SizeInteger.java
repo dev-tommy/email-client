@@ -1,7 +1,5 @@
 package pl.devtommy.model;
 
-import java.util.Comparator;
-
 public class SizeInteger implements Comparable<SizeInteger> {
     private int size;
 

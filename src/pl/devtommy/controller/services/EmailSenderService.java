@@ -13,7 +13,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EmailSenderService extends Service<EmailSendingResult> {
