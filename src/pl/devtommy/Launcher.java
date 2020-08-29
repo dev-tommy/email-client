@@ -1,9 +1,6 @@
 package pl.devtommy;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import pl.devtommy.controller.persistence.PersistenceAccess;
 import pl.devtommy.controller.persistence.ValidAccount;

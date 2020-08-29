@@ -18,7 +18,6 @@ import javax.mail.internet.MimeBodyPart;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ResourceBundle;
 

@@ -23,20 +23,6 @@ public class PersistenceAccess {
         return resultList;
     }
 
-    private void decodePasswords(List<ValidAccount> persistedList) {
-        for (ValidAccount validAccount : persistedList) {
-            String originalPassword = validAccount.getPassword();
-            validAccount.setPassword(encoder.decode(originalPassword));
-        }
-    }
-
-    private void encodePasswords(List<ValidAccount> persistedList) {
-        for (ValidAccount validAccount : persistedList) {
-            String originalPassword = validAccount.getPassword();
-            validAccount.setPassword(encoder.encode(originalPassword));
-        }
-    }
-
     public void saveToPersistence(List<ValidAccount> validAccounts){
         try {
             File file = new File(VALID_ACCOUNTS_LOCATION);
@@ -49,6 +35,20 @@ public class PersistenceAccess {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void decodePasswords(List<ValidAccount> persistedList) {
+        for (ValidAccount validAccount : persistedList) {
+            String originalPassword = validAccount.getPassword();
+            validAccount.setPassword(encoder.decode(originalPassword));
+        }
+    }
+
+    private void encodePasswords(List<ValidAccount> persistedList) {
+        for (ValidAccount validAccount : persistedList) {
+            String originalPassword = validAccount.getPassword();
+            validAccount.setPassword(encoder.encode(originalPassword));
         }
     }
 

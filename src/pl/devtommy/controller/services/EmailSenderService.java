@@ -13,7 +13,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EmailSenderService extends Service<EmailSendingResult> {
@@ -38,38 +37,13 @@ public class EmailSenderService extends Service<EmailSendingResult> {
             @Override
             protected EmailSendingResult call() throws Exception {
                 try {
-                    MimeMessage mimeMessage = new MimeMessage(emailAccount.getSession());
-                    mimeMessage.setFrom(emailAccount.getAddress());
-                    mimeMessage.addRecipients(Message.RecipientType.TO, recipient);
-                    mimeMessage.setSubject(subject);
-
-                    Multipart multipart = new MimeMultipart();
-                    BodyPart messageBodyPart = new MimeBodyPart();
-                    messageBodyPart.setContent(content, "text/html");
-                    multipart.addBodyPart(messageBodyPart);
+                    MimeMessage mimeMessage = createMimeMessage();
+                    Multipart multipart = setMessageContent();
                     mimeMessage.setContent(multipart);
+                    addAttachments(multipart);
+                    sendMessage(mimeMessage);
 
-                    if(attachments.size()>0){
-                        for( File file:attachments) {
-                            MimeBodyPart mimeBodyPart = new MimeBodyPart();
-                            DataSource source = new FileDataSource(file.getAbsoluteFile());
-                            mimeBodyPart.setDataHandler(new DataHandler(source));
-                            mimeBodyPart.setFileName(file.getName());
-                            multipart.addBodyPart(mimeBodyPart);
-                        }
-                    }
-
-                    Transport transport = emailAccount.getSession().getTransport();
-                    transport.connect(
-                            emailAccount.getProperties().getProperty("outgoingHost"),
-                            emailAccount.getAddress(),
-                            emailAccount.getPassword()
-                    );
-
-                    transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
-                    transport.close();
                     return EmailSendingResult.SUCCESS;
-
                 } catch (MessagingException e) {
                     e.printStackTrace();
                     return EmailSendingResult.FAILED_BY_PROVIDER;
@@ -77,8 +51,46 @@ public class EmailSenderService extends Service<EmailSendingResult> {
                     e.printStackTrace();
                     return EmailSendingResult.FAILED_BY_UNEXPECTED_ERROR;
                 }
-
             }
         };
+    }
+
+    private void sendMessage(MimeMessage mimeMessage) throws MessagingException {
+        Transport transport = emailAccount.getSession().getTransport();
+        transport.connect(
+                emailAccount.getProperties().getProperty("outgoingHost"),
+                emailAccount.getAddress(),
+                emailAccount.getPassword()
+        );
+        transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
+        transport.close();
+    }
+
+    private void addAttachments(Multipart multipart) throws MessagingException {
+        if(attachments.size()>0){
+            for( File file:attachments) {
+                MimeBodyPart mimeBodyPart = new MimeBodyPart();
+                DataSource source = new FileDataSource(file.getAbsoluteFile());
+                mimeBodyPart.setDataHandler(new DataHandler(source));
+                mimeBodyPart.setFileName(file.getName());
+                multipart.addBodyPart(mimeBodyPart);
+            }
+        }
+    }
+
+    private Multipart setMessageContent() throws MessagingException {
+        Multipart multipart = new MimeMultipart();
+        BodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setContent(content, "text/html");
+        multipart.addBodyPart(messageBodyPart);
+        return multipart;
+    }
+
+    private MimeMessage createMimeMessage() throws MessagingException {
+        MimeMessage mimeMessage = new MimeMessage(emailAccount.getSession());
+        mimeMessage.setFrom(emailAccount.getAddress());
+        mimeMessage.addRecipients(Message.RecipientType.TO, recipient);
+        mimeMessage.setSubject(subject);
+        return mimeMessage;
     }
 }
