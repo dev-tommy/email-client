@@ -4,6 +4,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
 import javax.mail.Folder;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FolderUpdaterService extends Service {
@@ -21,8 +22,9 @@ public class FolderUpdaterService extends Service {
             protected Object call() throws Exception {
                 for (;;){
                     try {
-                        Thread.sleep(5000);
-                        for (Folder folder: folderList){
+                        Thread.sleep(100);
+                        List<Folder> cloneFolderList = new ArrayList<Folder>(folderList);
+                        for (Folder folder: cloneFolderList){
                             if(folder.getType() != Folder.HOLDS_FOLDERS && folder.isOpen()) {
                                 folder.getMessageCount();
                             }
