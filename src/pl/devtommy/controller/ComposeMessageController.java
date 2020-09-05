@@ -67,6 +67,9 @@ public class ComposeMessageController extends BaseController implements Initiali
                 case NO_RECIPIENT:
                     errorLabel.setText("No recipient");
                     break;
+                case INVALID_RECIPIENT:
+                    errorLabel.setText("Invalid recipient");
+                    break;
                 case FAILED_BY_PROVIDER:
                     errorLabel.setText("Provider error");
                     break;
