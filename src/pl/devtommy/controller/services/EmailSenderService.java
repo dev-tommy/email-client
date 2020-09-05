@@ -9,9 +9,7 @@ import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.*;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.*;
 import java.io.File;
 import java.util.List;
 
@@ -37,6 +35,11 @@ public class EmailSenderService extends Service<EmailSendingResult> {
             @Override
             protected EmailSendingResult call() throws Exception {
                 try {
+                    if (recipient.isEmpty()) {
+                        return EmailSendingResult.NO_RECIPIENT;
+                    } else if (!validateEmail(recipient)) {
+                        return EmailSendingResult.INVALID_RECIPIENT;
+                    }
                     MimeMessage mimeMessage = createMimeMessage();
                     Multipart multipart = setMessageContent();
                     mimeMessage.setContent(multipart);
@@ -92,5 +95,17 @@ public class EmailSenderService extends Service<EmailSendingResult> {
         mimeMessage.addRecipients(Message.RecipientType.TO, recipient);
         mimeMessage.setSubject(subject);
         return mimeMessage;
+    }
+
+    private boolean validateEmail(String email) {
+        boolean isValid = false;
+        try {
+            InternetAddress internetAddress = new InternetAddress(email);
+            internetAddress.validate();
+            isValid = true;
+        } catch (AddressException e) {
+            //e.printStackTrace();
+        }
+        return isValid;
     }
 }
