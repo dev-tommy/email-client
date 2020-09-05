@@ -37,6 +37,9 @@ public class EmailSenderService extends Service<EmailSendingResult> {
             @Override
             protected EmailSendingResult call() throws Exception {
                 try {
+                    if (recipient.isEmpty()) {
+                        return EmailSendingResult.NO_RECIPIENT;
+                    }
                     MimeMessage mimeMessage = createMimeMessage();
                     Multipart multipart = setMessageContent();
                     mimeMessage.setContent(multipart);
