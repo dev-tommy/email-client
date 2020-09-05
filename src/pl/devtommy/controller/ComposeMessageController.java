@@ -64,6 +64,9 @@ public class ComposeMessageController extends BaseController implements Initiali
                     Stage stage = (Stage) recipientTextField.getScene().getWindow();
                     viewFactory.closeStage(stage);
                     break;
+                case NO_RECIPIENT:
+                    errorLabel.setText("No recipient");
+                    break;
                 case FAILED_BY_PROVIDER:
                     errorLabel.setText("Provider error");
                     break;
